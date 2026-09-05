@@ -1,0 +1,11 @@
+.vs/
+packages/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.log
+*.db
+*.pdb
+*.cache
+InstallUtil.InstallLog

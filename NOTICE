@@ -1,0 +1,14 @@
+Windows RDP Audit
+
+This project is an unofficial derivative of RdpMon:
+https://github.com/cameyo/rdpmon
+
+Base commit: f9267209cf6d4a28edb9b3908c92e936b5708b06
+Original software copyright (c) 2019 Eyal Dotan
+
+Simplified Chinese localization, build support, documentation, and subsequent
+modifications copyright (c) 2026 baigeixiangcai.
+
+The original software and this derivative are distributed under the MIT
+License included in the LICENSE file. This project is not affiliated with,
+endorsed by, or an official release of Cameyo.

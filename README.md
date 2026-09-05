@@ -1,34 +1,51 @@
-# RdpMon - Server-side RDP monitoring tool
+# Windows RDP Audit（RdpMon 简体中文修改版）
 
-## Overview
-A monitoring tool for RDS servers that shows real-time and past RDP connections along with source IP, success and failure counts, logins, active and past session, executed processes and more.
+这是一个用于 Windows 远程桌面（RDP）审计的桌面工具，可在本机持续记录并查看 RDP 连接活动。
 
-[>> Download RdpMon.exe (x64) <<](https://cameyo.com/download-rdpmon)
+本仓库是 [Cameyo/RdpMon](https://github.com/cameyo/rdpmon) 的非官方修改版，基于上游提交 `f9267209cf6d4a28edb9b3908c92e936b5708b06`。本项目与 Cameyo 无隶属或官方认可关系。
 
-## RDP security and brute-force attacks
-RDP is a fantastic technology, yet it brings some security challenges along, especially when it comes to cloud machines that are directly connected to the Internet. From our own observations once a cloud-connected machine with port 3389 is discovered by several bots, it undergoes **brute-force attacks** that amount to 100K - 200K password attempts per week. And in most cases it is difficult to even know about it. Also, security vulnerabilities that are discovered from time to time such as [BlueKeep](https://en.wikipedia.org/wiki/BlueKeep) can make this even more challenging.
-Most RDP tools are designed to manage the Windows aspect of it such as users, quotas etc. But there is very little when it comes to cloud-oriented RDP security and management. RdpMon addresses the need of cloud-oriented RDP monitoring.
+## 当前功能
 
-## Usage
-The first time you run RdpMon, it installs itself as a service named "RDP Monitor". The service part constantly logs in the background RDP activity targeted at the machine it runs on, even when you are logged off. The GUI part lets you view the logged activity as well as real-time connection and session events as they occur. Both parts are contained within the same executable: RdpMon.exe.
+- 按来源 IP 汇总连接尝试
+- 查看成功次数、失败次数、首次尝试和最后尝试时间
+- 查看历史及当前 RDP 会话、登录账号、登录时间和持续时间
+- 查看会话内运行的进程
+- 通过同一可执行文件安装后台 Windows 服务并打开管理界面
+- 提供纯简体中文界面
 
-### Connections
-Under the Connections tab you can see RDP connections and connection attempts, grouped by IPs. IPs are marked by different colors: green=legitimate connections, red=high-intensity failed connections (likely brute-force attacks), yellow=low-intensity failed connections.
-![RdpMon connections](https://files.cameyo.com/resources/rdpmon-connects-1.png)
+> 本项目当前是 Windows 桌面程序，并非 Web 管理页面。后续计划可在现有审计数据基础上增加本地 Web 查询界面。
 
-At the bottom, a status bar shows the overall counts:
+## 工作原理
 
-![RdpMon status](https://files.cameyo.com/resources/rdpmon-connects-statusbar.png)
+后台服务订阅 Windows 事件日志中的远程桌面和安全审计事件，提取来源 IP、账号、会话与登录结果等信息，并将记录保存在本机 LiteDB 数据库中。桌面界面读取数据库并实时展示汇总数据。
 
-### Sessions
-Under the Sessions tab you can view both past and current RDP sessions. Clicking on a session in this list displays the processes that were / are used during this session. Live sessions are marked by a green bullet. Right-clicking on a live session allows shadowing it (=viewing the session in real time).
-![RdpMon sessions](https://files.cameyo.com/resources/rdpmon-sessions-1.png)
+准确记录登录成功或失败依赖 Windows 相应审计策略和事件日志已启用。首次运行需要管理员权限，以便安装和启动 `RDP Monitor` Windows 服务。
 
-This project uses LiteDB for data storage.
+## 构建
 
-## License
+环境要求：
 
-[MIT](http://opensource.org/licenses/MIT)
+- Windows
+- Visual Studio 2022 或 Build Tools（含 MSBuild）
+- NuGet
+- .NET Framework 4.6.1 目标组件；也可由 NuGet 恢复 `Microsoft.NETFramework.ReferenceAssemblies.net461`
 
-Copyright (c) 2019 - Cameyo Inc, by Eyal Dotan
+在仓库根目录执行：
 
+```powershell
+nuget restore .\RdpMon.sln -ConfigFile .\NuGet.Config
+msbuild .\RdpMon.sln /t:Build /p:Configuration=Release /p:Platform="Any CPU" `
+  /p:TargetFrameworkRootPath=".\packages\Microsoft.NETFramework.ReferenceAssemblies.net461.1.0.3\build\"
+```
+
+汉化冒烟测试：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\LocalizationSmokeTest.ps1
+```
+
+## 来源与许可证
+
+项目保留完整上游 Git 历史和原始 [`LICENSE`](LICENSE)。源代码依照 MIT License 使用、修改和再发布；修改说明见 [`NOTICE`](NOTICE)，第三方依赖许可见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
+
+发布修改版时必须保留原 MIT 版权和许可声明。`RdpMon`、`Cameyo` 及相关名称不因 MIT 许可而成为本项目的商标授权。

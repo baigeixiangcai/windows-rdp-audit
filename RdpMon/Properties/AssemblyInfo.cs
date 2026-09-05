@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RDP Monitor")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Windows RDP Audit")]
+[assembly: AssemblyDescription("Windows RDP audit tool - unofficial Simplified Chinese RdpMon derivative")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Cameyo Inc.")]
-[assembly: AssemblyProduct("RDP Monitor")]
-[assembly: AssemblyCopyright("Copyright © 2019")]
+[assembly: AssemblyCompany("baigeixiangcai")]
+[assembly: AssemblyProduct("Windows RDP Audit")]
+[assembly: AssemblyCopyright("Copyright © 2019 Eyal Dotan; modifications © 2026 baigeixiangcai")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

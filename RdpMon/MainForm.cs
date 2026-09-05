@@ -158,8 +158,8 @@ namespace Cameyo.RdpMon
                 lvi.SubItems[colIP.DisplayIndex].Text = ip;
                 lvi.SubItems[colFailCount.DisplayIndex].Text = addr.FailCount.ToString();
                 lvi.SubItems[colSuccessCount.DisplayIndex].Text = addr.SuccessCount.ToString();
-                lvi.SubItems[colFirstTime.DisplayIndex].Text = addr.First.ToLocalTime().ToString("MM/dd HH:mm:ss");
-                lvi.SubItems[colLastTime.DisplayIndex].Text = addr.Last.ToLocalTime().ToString("MM/dd HH:mm:ss");
+                lvi.SubItems[colFirstTime.DisplayIndex].Text = addr.First.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
+                lvi.SubItems[colLastTime.DisplayIndex].Text = addr.Last.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                 if (addr.UserNames.Count() <= 5)
                     lvi.SubItems[colLogins.DisplayIndex].Text = string.Join(", ", addr.UserNames);
                 else
@@ -169,7 +169,7 @@ namespace Cameyo.RdpMon
                     lvi.ImageIndex = 0;
                     if (addr.IsOngoing()) //|| (lastRefresh != DateTime.MinValue && attack.Last > lastRefresh))
                     {
-                        lvi.SubItems[colDuration.DisplayIndex].Text = "ongoing";
+                        lvi.SubItems[colDuration.DisplayIndex].Text = "进行中";
                         lvi.UseItemStyleForSubItems = false;
                         lvi.SubItems[colDuration.DisplayIndex].ForeColor = Color.Red;
                         //lvi.ImageIndex = 1;
@@ -202,7 +202,7 @@ namespace Cameyo.RdpMon
                 for (int i = 0; i < lv.Items.Count; i++)
                 {
                     // Update "Ongoing" items that are no longer ongoing
-                    if (lv.Items[i].SubItems[colDuration.DisplayIndex].Text == "ongoing")
+                    if (lv.Items[i].SubItems[colDuration.DisplayIndex].Text == "进行中")
                     {
                         var _addr = (Addr)lv.Items[i].Tag;
                         if (!_addr.IsOngoing())
@@ -227,12 +227,12 @@ namespace Cameyo.RdpMon
             lastConnectRefresh = now;
 
             // Statistics
-            toolStripStatsLabel.Text = totalLegits + " legitimate users, " + totalAttackers + " suspected addresses";
+            toolStripStatsLabel.Text = totalLegits + " 个正常来源，" + totalAttackers + " 个可疑地址";
             if (totalAttempts > 0)
             {
-                toolStripStatsLabel.Text += ", " + totalAttempts + " password attempts";
+                toolStripStatsLabel.Text += "，共 " + totalAttempts + " 次密码尝试";
                 if (nla <= 0)
-                    toolStripStatsLabel.Text += ", WARNING: NLA not activated on this machine!";
+                    toolStripStatsLabel.Text += "；警告：本机未启用网络级别身份验证（NLA）！";
             }
         }
 
@@ -266,8 +266,8 @@ namespace Cameyo.RdpMon
                             FindSessionLvItem(dbSession.SessionUid, out var lvi))
                         {
                             // Update just-ended session
-                            lvi.SubItems[ColSessionState.DisplayIndex].Text = "Ended";
-                            lvi.SubItems[ColSessionEnded.DisplayIndex].Text = (dbSession.End != null ? dbSession.End.Value.ToLocalTime().ToString("MM/dd HH:mm:ss") : "");
+                            lvi.SubItems[ColSessionState.DisplayIndex].Text = "已结束";
+                            lvi.SubItems[ColSessionEnded.DisplayIndex].Text = (dbSession.End != null ? dbSession.End.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : "");
                             lvi.ImageIndex = -1;
                         }
                         continue;
@@ -286,7 +286,7 @@ namespace Cameyo.RdpMon
                     {
                         if (FindSessionLvItem(dbSession.SessionUid, out var lvi))
                         {
-                            lvi.SubItems[ColSessionStarted.DisplayIndex].Text = dbSession.Start.ToLocalTime().ToString("MM/dd HH:mm:ss");
+                            lvi.SubItems[ColSessionStarted.DisplayIndex].Text = dbSession.Start.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                             lvi.SubItems[ColSessionState.DisplayIndex].Text = equivalentActiveSession.StateStr();
                             lvi.Tag = dbSession;
                             existingFound = true;
@@ -308,18 +308,18 @@ namespace Cameyo.RdpMon
 
                         lvi.SubItems[ColWtsSessionId.DisplayIndex].Text = dbSession.WtsSessionId.ToString();
                         lvi.SubItems[ColSessionUser.DisplayIndex].Text = (dbSession.User ?? "").ToString();
-                        lvi.SubItems[ColSessionStarted.DisplayIndex].Text = dbSession.Start.ToLocalTime().ToString("MM/dd HH:mm:ss");
+                        lvi.SubItems[ColSessionStarted.DisplayIndex].Text = dbSession.Start.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss");
                         if (dbSession.End != null)
-                            lvi.SubItems[ColSessionState.DisplayIndex].Text = "Ended";
+                            lvi.SubItems[ColSessionState.DisplayIndex].Text = "已结束";
                         if (equivalentActiveSession != null)
                         {
                             lvi.ImageIndex = 1;
-                            lvi.SubItems[ColSessionEnded.DisplayIndex].Text = "ongoing";
+                            lvi.SubItems[ColSessionEnded.DisplayIndex].Text = "进行中";
                         }
                         else
-                            lvi.SubItems[ColSessionEnded.DisplayIndex].Text = (dbSession.End != null ? dbSession.End.Value.ToLocalTime().ToString("MM/dd HH:mm:ss") : "");
+                            lvi.SubItems[ColSessionEnded.DisplayIndex].Text = (dbSession.End != null ? dbSession.End.Value.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss") : "");
 
-                        lvi.SubItems[ColSessionAddr.DisplayIndex].Text = (dbSession.Addr == "127.0.0.1" ? "localhost" : dbSession.Addr);
+                        lvi.SubItems[ColSessionAddr.DisplayIndex].Text = (dbSession.Addr == "127.0.0.1" ? "本机" : dbSession.Addr);
                         lvi.Tag = dbSession;
                         if (adding)
                             lv.Items.Add(lvi);

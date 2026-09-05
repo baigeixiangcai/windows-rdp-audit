@@ -95,9 +95,9 @@ namespace Cameyo.RdpMon
                     if (!installed)
                     {
                         var resp = MessageBox.Show(null,
-                            "RdpMon will now install as a service and start collecting data.\n" +
-                            "You can uninstall this service using the command: 'rdpmon.exe -uninst'",
-                            Utils.MyExe(), MessageBoxButtons.OKCancel);
+                            "RdpMon 将安装为 Windows 服务并开始采集数据。\n" +
+                            "如需卸载服务，请运行命令：rdpmon.exe -uninst",
+                            "RDP 访问监控", MessageBoxButtons.OKCancel);
                         if (resp == DialogResult.Cancel)
                         {
                             Application.Exit();
@@ -112,21 +112,21 @@ namespace Cameyo.RdpMon
                             Utils.ExecProg(Utils.MyExe(), null, ref exitCode, 45 * 1000, false);
                         }
                         else
-                            MessageBox.Show("Failed installing service. Please try again.");
+                            MessageBox.Show("服务安装失败，请重试。", "RDP 访问监控");
                         Application.Exit();
                         return;
                     }
                     
                     // Check if service is started
                     if (!started)
-                        MessageBox.Show("Warning: 'RdpMon' service is not started. Data cannot be collected.");
+                        MessageBox.Show("警告：RdpMon 服务尚未启动，无法采集数据。", "RDP 访问监控");
 
                     // Start GUI
                     var mutexName = "RdpMon.GUI";
                     var mutex = new Mutex(true, mutexName);
                     if (!mutex.WaitOne(0))
                     {
-                        MessageBox.Show("Application is already running, quitting.");
+                        MessageBox.Show("程序已经在运行。", "RDP 访问监控");
                         return;
                     }
                     try

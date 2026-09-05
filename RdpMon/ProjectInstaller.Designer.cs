@@ -39,8 +39,8 @@
             // 
             // serviceInstaller
             // 
-            this.serviceInstaller.DisplayName = "RDP Monitor";
-            this.serviceInstaller.Description = "Collects data on RDP activity and brute-force attacks.";
+            this.serviceInstaller.DisplayName = "RDP 访问监控";
+            this.serviceInstaller.Description = "采集 RDP 访问活动和疑似暴力破解数据。";
             this.serviceInstaller.ServiceName = "RdpMon";
             this.serviceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
