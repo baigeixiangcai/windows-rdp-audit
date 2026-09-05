@@ -300,7 +300,7 @@
             this.filterBtnUnknown});
             this.connectsToolStrip.Location = new System.Drawing.Point(3, 0);
             this.connectsToolStrip.Name = "connectsToolStrip";
-            this.connectsToolStrip.Size = new System.Drawing.Size(87, 31);
+            this.connectsToolStrip.Size = new System.Drawing.Size(260, 31);
             this.connectsToolStrip.TabIndex = 0;
             // 
             // filterBtnLegits
@@ -308,13 +308,13 @@
             this.filterBtnLegits.Checked = true;
             this.filterBtnLegits.CheckOnClick = true;
             this.filterBtnLegits.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.filterBtnLegits.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.filterBtnLegits.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.filterBtnLegits.Image = ((System.Drawing.Image)(resources.GetObject("filterBtnLegits.Image")));
             this.filterBtnLegits.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.filterBtnLegits.Name = "filterBtnLegits";
-            this.filterBtnLegits.Size = new System.Drawing.Size(28, 28);
-            this.filterBtnLegits.Text = "成功连接";
-            this.filterBtnLegits.ToolTipText = "显示成功连接";
+            this.filterBtnLegits.Size = new System.Drawing.Size(68, 28);
+            this.filterBtnLegits.Text = "正常来源";
+            this.filterBtnLegits.ToolTipText = "显示正常来源";
             this.filterBtnLegits.Click += new System.EventHandler(this.OnConnectFilterClick);
             // 
             // filterBtnAttacks
@@ -322,11 +322,11 @@
             this.filterBtnAttacks.Checked = true;
             this.filterBtnAttacks.CheckOnClick = true;
             this.filterBtnAttacks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.filterBtnAttacks.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.filterBtnAttacks.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.filterBtnAttacks.Image = ((System.Drawing.Image)(resources.GetObject("filterBtnAttacks.Image")));
             this.filterBtnAttacks.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.filterBtnAttacks.Name = "filterBtnAttacks";
-            this.filterBtnAttacks.Size = new System.Drawing.Size(28, 28);
+            this.filterBtnAttacks.Size = new System.Drawing.Size(92, 28);
             this.filterBtnAttacks.Text = "疑似暴力破解";
             this.filterBtnAttacks.ToolTipText = "显示疑似恶意连接";
             this.filterBtnAttacks.Click += new System.EventHandler(this.OnConnectFilterClick);
@@ -336,11 +336,11 @@
             this.filterBtnUnknown.Checked = true;
             this.filterBtnUnknown.CheckOnClick = true;
             this.filterBtnUnknown.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.filterBtnUnknown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.filterBtnUnknown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.filterBtnUnknown.Image = ((System.Drawing.Image)(resources.GetObject("filterBtnUnknown.Image")));
             this.filterBtnUnknown.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.filterBtnUnknown.Name = "filterBtnUnknown";
-            this.filterBtnUnknown.Size = new System.Drawing.Size(28, 28);
+            this.filterBtnUnknown.Size = new System.Drawing.Size(92, 28);
             this.filterBtnUnknown.Text = "低频失败连接";
             this.filterBtnUnknown.ToolTipText = "显示未确定性质的连接";
             this.filterBtnUnknown.Click += new System.EventHandler(this.OnConnectFilterClick);

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,6 +25,8 @@ namespace Cameyo.RdpMon
         long totalLegits = 0, totalAttackers = 0, totalAttempts = 0;
         int nla = 0;
         bool dbg = false;
+        readonly ContextMenuStrip connectsContextMenuStrip = new ContextMenuStrip();
+        readonly ToolStripMenuItem copyIpMenuItem = new ToolStripMenuItem("复制 IP 地址");
 
         public ColumnHeader ColDuration => colDuration;
         public ColumnHeader ColFailCount => colFailCount;
@@ -42,11 +45,70 @@ namespace Cameyo.RdpMon
         public MainForm()
         {
             InitializeComponent();
+            components.Add(connectsContextMenuStrip);
             fromDate = DateTime.MinValue;
             connectsSorter = new ListViewColumnSorter(this);
             sessionsSorter = new ListViewColumnSorter(this);
             connectsLv.ColumnClick += OnLvColumnClick;
             sessionsLv.ColumnClick += OnLvColumnClick;
+            copyIpMenuItem.Click += CopyIpMenuItem_Click;
+            connectsContextMenuStrip.Items.Add(copyIpMenuItem);
+            connectsLv.ContextMenuStrip = connectsContextMenuStrip;
+            connectsLv.MouseUp += ConnectsLv_MouseUp;
+            connectsLv.KeyDown += ConnectsLv_KeyDown;
+        }
+
+        private void ConnectsLv_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                CopySelectedIp();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void ConnectsLv_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+
+            var hit = connectsLv.HitTest(e.Location);
+            if (hit.Item == null || hit.SubItem == null || hit.Item.SubItems.IndexOf(hit.SubItem) != colIP.DisplayIndex)
+            {
+                connectsLv.SelectedItems.Clear();
+                copyIpMenuItem.Enabled = false;
+                return;
+            }
+
+            connectsLv.SelectedItems.Clear();
+            hit.Item.Selected = true;
+            hit.Item.Focused = true;
+            copyIpMenuItem.Enabled = true;
+        }
+
+        private void CopyIpMenuItem_Click(object sender, EventArgs e)
+        {
+            CopySelectedIp();
+        }
+
+        private void CopySelectedIp()
+        {
+            if (connectsLv.SelectedItems.Count == 0)
+                return;
+
+            var ip = connectsLv.SelectedItems[0].SubItems[colIP.DisplayIndex].Text;
+            if (!string.IsNullOrWhiteSpace(ip))
+            {
+                try
+                {
+                    Clipboard.SetDataObject(ip, true, 3, 50);
+                }
+                catch (ExternalException)
+                {
+                    toolStripStatsLabel.Text = "剪贴板当前不可用，请稍后重试";
+                }
+            }
         }
 
         private void OnFormLoad(object sender, EventArgs e)
